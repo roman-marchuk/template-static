@@ -1,68 +1,75 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 import { CalculatorPreview } from "@/components/calculator-preview";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteNav } from "@/components/site-nav";
+import { SiteNavSession } from "@/components/site-nav-session";
 import { Button } from "@/components/ui/button";
+import { getCurrentUserWithProfile } from "@/lib/auth/session";
 
 const specs = [
   {
     name: "Authentication",
     value: "Email + Google OAuth",
-    note: "SSR sessions, protected routes",
+    note: "Server sessions; middleware guards protected routes",
   },
   {
     name: "Data layer",
     value: "Supabase + RLS",
-    note: "Per-user calculator history",
+    note: "Profiles and per-user calculator history",
   },
   {
-    name: "Demo app",
+    name: "Reference UI",
     value: "Calculator",
-    note: "Expression eval, auto-save",
+    note: "Expression evaluation with optional persistence",
   },
   {
-    name: "Deploy target",
-    value: "Vercel-ready",
-    note: "Env vars + migrations included",
+    name: "Operations",
+    value: "Vercel + migrations",
+    note: "Env-driven config; SQL migrations in repo",
   },
 ] as const;
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { user } = await getCurrentUserWithProfile();
+
   return (
     <>
-      <SiteNav />
+      <SiteNavSession />
 
       <main className="flex flex-1 flex-col pt-[calc(var(--nav-pill-offset)+3.5rem)]">
         <section className="page-gutter pb-[var(--space-3xl)] pt-[var(--space-xl)]">
-          <div className="page-max grid min-w-0 items-center gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[var(--space-2xl)]">
-            <div className="min-w-0 space-y-6">
-              <h1 className="text-display font-display font-semibold text-balance text-[var(--color-ink)]">
-                Ship Next.js apps with auth built in
-              </h1>
-              <p className="max-w-[42ch] text-lg leading-relaxed text-[var(--color-muted)] text-pretty">
-                A reusable foundation for static and server-rendered projects.
-                Connect Supabase, extend the calculator demo, and deploy — without
-                rebuilding sign-in from scratch.
+          <div className="page-max grid min-w-0 items-start gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[var(--space-2xl)]">
+            <div className="min-w-0 space-y-5">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[var(--tracking-label)] text-[var(--color-muted)]">
+                Project overview
               </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link href="/login">
-                  <Button
-                    size="lg"
-                    className="h-10 rounded-[var(--radius-pill)] px-5"
-                  >
-                    Sign in
-                    <ArrowRight />
-                  </Button>
-                </Link>
+              <h1 className="text-display font-display font-semibold text-balance text-[var(--color-ink)]">
+                Next.js starter with Supabase auth
+              </h1>
+              <p className="max-w-[44ch] text-base leading-relaxed text-[var(--color-muted)] text-pretty">
+                A reusable base for static and server-rendered apps that need
+                sign-in, row-level access, and a small end-to-end example. The
+                calculator is the reference surface—it exercises auth,
+                evaluation, and history storage without extra product chrome.
+              </p>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                {!user ? (
+                  <Link href="/login">
+                    <Button
+                      size="lg"
+                      className="h-10 rounded-[var(--radius-pill)] px-5"
+                    >
+                      Sign in
+                    </Button>
+                  </Link>
+                ) : null}
                 <Link href="/calculator">
                   <Button
-                    variant="outline"
+                    variant={user ? "default" : "outline"}
                     size="lg"
                     className="h-10 rounded-[var(--radius-pill)] px-5"
                   >
-                    Open calculator
+                    Calculator
                   </Button>
                 </Link>
               </div>
@@ -74,16 +81,18 @@ export default function HomePage() {
 
         <section className="hairline-top bg-[var(--color-paper-2)] px-[var(--page-gutter)] py-[var(--space-2xl)]">
           <div className="page-max min-w-0">
-            <div className="mb-8 max-w-xl">
-              <h2 className="text-display-s font-display font-semibold text-[var(--color-ink)]">
-                What you get out of the box
-              </h2>
-              <p className="mt-3 text-[var(--color-muted)]">
-                Concrete pieces, not placeholder copy. Extend or replace any row.
-              </p>
-            </div>
+            <p className="font-mono text-[0.65rem] uppercase tracking-[var(--tracking-label)] text-[var(--color-muted)]">
+              Repository map
+            </p>
+            <h2 className="text-display-s mt-3 font-display font-semibold text-[var(--color-ink)]">
+              What is included
+            </h2>
+            <p className="mt-3 max-w-xl text-sm text-[var(--color-muted)]">
+              Main layers in this template and the role each one plays when you
+              extend the project.
+            </p>
 
-            <div className="overflow-x-auto">
+            <div className="mt-8 overflow-x-auto">
               <table className="tnum w-full min-w-[20rem] border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-[var(--color-rule)]">
@@ -91,10 +100,10 @@ export default function HomePage() {
                       Layer
                     </th>
                     <th className="pb-3 pr-6 font-medium text-[var(--color-ink)]">
-                      Included
+                      Implementation
                     </th>
                     <th className="pb-3 font-medium text-[var(--color-muted)]">
-                      Notes
+                      Role
                     </th>
                   </tr>
                 </thead>

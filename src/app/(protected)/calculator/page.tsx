@@ -22,15 +22,19 @@ export default async function CalculatorPage() {
         <h1 className="text-display-s mt-2 font-display font-semibold text-[var(--color-ink)]">
           Calculator
         </h1>
-        <p className="mt-2 max-w-[48ch] text-[var(--color-muted)]">
+        <p className="mt-2 max-w-[48ch] text-sm text-[var(--color-muted)]">
           {user
-            ? "Evaluate expressions, save results to your account, and recall them from history."
-            : "Evaluate expressions in the browser. Sign in to sync history to your account."}
+            ? "Expressions evaluate client-side; results can be saved and loaded from your history table."
+            : "Expressions evaluate client-side. Sign in to write history to your account."}
         </p>
         {!user ? (
           <Link href="/login?next=/calculator" className="mt-4 inline-block">
-            <Button size="sm" className="rounded-[var(--radius-pill)]">
-              Sign in to save history
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-[var(--radius-pill)]"
+            >
+              Sign in
             </Button>
           </Link>
         ) : null}

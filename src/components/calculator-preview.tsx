@@ -15,15 +15,12 @@ function Key({ label, accent }: { label: string; accent?: boolean }) {
 export function CalculatorPreview() {
   return (
     <figure
-      className="relative w-full min-w-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] p-5 shadow-[0_16px_40px_-20px_oklch(14%_0.015_280_/_0.18)]"
+      className="relative w-full min-w-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] p-5"
       aria-label="Calculator preview"
     >
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <span className="font-mono text-[0.65rem] uppercase tracking-[var(--tracking-label)] text-[var(--color-muted)]">
-          Live demo
-        </span>
-        <span className="size-2 rounded-full bg-[var(--color-accent)]" aria-hidden />
-      </div>
+      <p className="mb-4 font-mono text-[0.65rem] uppercase tracking-[var(--tracking-label)] text-[var(--color-muted)]">
+        Reference UI
+      </p>
 
       <div className="mb-4 rounded-md border border-[var(--color-rule)] bg-[var(--color-paper)] px-4 py-3 text-right">
         <p className="tnum truncate font-mono text-2xl font-medium tracking-tight text-[var(--color-ink)]">

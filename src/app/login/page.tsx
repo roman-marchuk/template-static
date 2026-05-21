@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { EmailAuthForm } from "@/components/auth/email-auth-form";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { SiteNav } from "@/components/site-nav";
+import { SiteNavSession } from "@/components/site-nav-session";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -23,20 +23,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <>
-      <SiteNav />
+      <SiteNavSession />
 
       <main className="flex min-h-[calc(100vh-1rem)] flex-1 flex-col pt-[calc(var(--nav-pill-offset)+3.5rem)] lg:min-h-screen lg:flex-row lg:pt-0">
         <section className="page-gutter flex flex-1 flex-col justify-center border-[var(--color-rule)] py-10 lg:border-r lg:py-0">
           <div className="page-max mx-auto w-full max-w-md lg:max-w-lg">
             <p className="font-mono text-[0.65rem] uppercase tracking-[var(--tracking-label)] text-[var(--color-muted)]">
-              Account access
+              Authentication
             </p>
             <h1 className="text-display-s mt-3 font-display font-semibold text-balance text-[var(--color-ink)]">
-              Sign in to save your work
+              Sign in
             </h1>
-            <p className="mt-4 max-w-[38ch] leading-relaxed text-[var(--color-muted)]">
-              The calculator persists history per account. Use email or Google —
-              sessions stay active across reloads.
+            <p className="mt-4 max-w-[40ch] text-base leading-relaxed text-[var(--color-muted)]">
+              Calculator history is stored per account in Supabase. Email and
+              Google are wired here; sessions persist across reloads.
             </p>
             <Link
               href="/"
@@ -51,10 +51,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <div className="w-full max-w-md rounded-[var(--radius-card)] border border-[var(--color-rule)] bg-[var(--color-paper)] p-6 sm:p-8">
             <div className="mb-6 space-y-1">
               <h2 className="text-lg font-semibold text-[var(--color-ink)]">
-                Welcome
+                Account
               </h2>
               <p className="text-sm text-[var(--color-muted)]">
-                Sign in or create an account to use the calculator.
+                Sign in or register to persist calculator history.
               </p>
             </div>
 

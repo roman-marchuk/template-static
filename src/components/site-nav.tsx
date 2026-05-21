@@ -1,12 +1,14 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 
 type SiteNavProps = {
   signedIn?: boolean;
+  trailing?: ReactNode;
 };
 
-export function SiteNav({ signedIn = false }: SiteNavProps) {
+export function SiteNav({ signedIn = false, trailing }: SiteNavProps) {
   return (
     <nav
       className="nav-pill-surface fixed inset-x-0 top-[var(--nav-pill-offset)] z-[300] mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-4 rounded-[var(--radius-pill)] px-3.5 py-2 sm:gap-6 sm:px-4"
@@ -33,19 +35,14 @@ export function SiteNav({ signedIn = false }: SiteNavProps) {
       </ul>
 
       <div className="ml-auto flex items-center gap-2">
-        {signedIn ? (
-          <Link href="/calculator">
-            <Button size="sm" className="rounded-[var(--radius-pill)]">
-              Open app
-            </Button>
-          </Link>
-        ) : (
-          <Link href="/login">
-            <Button size="sm" className="rounded-[var(--radius-pill)]">
-              Sign in
-            </Button>
-          </Link>
-        )}
+        {trailing ??
+          (signedIn ? null : (
+            <Link href="/login">
+              <Button size="sm" className="rounded-[var(--radius-pill)]">
+                Sign in
+              </Button>
+            </Link>
+          ))}
       </div>
     </nav>
   );
