@@ -10,7 +10,7 @@ const specs = [
   {
     name: "Authentication",
     value: "Email + Google OAuth",
-    note: "Server sessions; middleware guards protected routes",
+    note: "Server sessions; middleware refreshes cookies on each request",
   },
   {
     name: "Data layer",

@@ -20,6 +20,9 @@
 # production
 /build
 
+# design tooling
+.hallmark/
+
 # misc
 .DS_Store
 *.pem

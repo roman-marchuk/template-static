@@ -5,10 +5,10 @@ Reusable Next.js template with Supabase auth (email/password + Google), Postgres
 ## What's included
 
 - **Next.js 16** (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui
-- **Supabase SSR auth** — email/password sign-up & sign-in, Google OAuth, session middleware, protected routes
+- **Supabase SSR auth** — email/password sign-up & sign-in, Google OAuth, session refresh middleware
 - **Postgres + RLS** — `profiles` (auto-created on signup) and `calculator_history` tables
 - **Server actions** — Zod-validated `saveCalculation`, `listHistory`, `clearHistory`
-- **Demo calculator** — safe expression evaluator (no `eval()`), keypad UI, persisted history panel
+- **Demo calculator** — safe expression evaluator (no `eval()`), keypad UI, guest session history or per-user persistence when signed in
 - **Landing + login pages** — ready to customize for new projects
 
 ## Clone for a new project
@@ -84,9 +84,9 @@ Complete these steps once per Supabase project and deployment target.
 
 ### Smoke test
 
-- [ ] `npm run dev` → open `/`, sign in or create an account at `/login`
-- [ ] OAuth completes via `/auth/callback` and lands on `/calculator`
-- [ ] Calculate `2+2` — entry appears in history after refresh
+- [ ] `npm run dev` → open `/calculator`, calculate `2+2` — guest history appears in the panel
+- [ ] Sign in or create an account at `/login` — OAuth completes via `/auth/callback`
+- [ ] Calculate again while signed in — entry persists in Supabase after refresh
 - [ ] Sign out returns to `/`
 
 ## Local development
@@ -123,17 +123,21 @@ Other scripts:
 ```
 src/
   app/
-    (protected)/calculator/   # Auth-required demo app
+    (app)/calculator/         # Demo app (guest or signed-in)
     auth/callback/            # OAuth code exchange
     login/                    # Sign-in page
   components/
-    auth/                     # OAuth + sign-out
+    auth/                     # Email + OAuth + sign-out
     calculator/               # Demo UI
     ui/                       # shadcn components
   lib/
-    actions/history.ts        # Server actions
+    actions/                  # Server actions (auth, history)
+    auth/session.ts           # User + profile helpers
     calculator/evaluate.ts    # Safe math evaluator
     supabase/                 # SSR clients + middleware helper
-  middleware.ts               # Session refresh + route protection
-supabase/migrations/          # SQL schema + RLS
+  middleware.ts               # Session refresh on each request
+tokens.css                    # Spacing, color, motion tokens (project root)
+supabase/
+  migrations/                 # SQL schema + RLS
+  apply-all.sql               # Optional single-file SQL for dashboard
 ```

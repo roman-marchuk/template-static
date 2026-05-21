@@ -1,6 +1,6 @@
 import { SiteNavSession } from "@/components/site-nav-session";
 
-export default function ProtectedLayout({
+export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;

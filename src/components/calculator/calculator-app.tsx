@@ -1,7 +1,7 @@
 "use client";
 
 import { Equal, History, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useState, useSyncExternalStore, useTransition } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,22 @@ function readGuestHistory(): HistoryListItem[] {
 
 function writeGuestHistory(items: HistoryListItem[]) {
   sessionStorage.setItem(GUEST_HISTORY_KEY, JSON.stringify(items));
+}
+
+const guestHistoryListeners = new Set<() => void>();
+
+function subscribeGuestHistory(onStoreChange: () => void) {
+  guestHistoryListeners.add(onStoreChange);
+  return () => guestHistoryListeners.delete(onStoreChange);
+}
+
+function getGuestHistorySnapshot(): HistoryListItem[] {
+  return readGuestHistory();
+}
+
+function setGuestHistory(items: HistoryListItem[]) {
+  writeGuestHistory(items);
+  guestHistoryListeners.forEach((listener) => listener());
 }
 
 function appendGuestHistory(
@@ -97,18 +113,15 @@ export function CalculatorApp({
   const [expression, setExpression] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [history, setHistory] = useState(initialHistory);
+  const [persistedHistory, setPersistedHistory] = useState(initialHistory);
+  const guestHistory = useSyncExternalStore(
+    subscribeGuestHistory,
+    getGuestHistorySnapshot,
+    () => [],
+  );
+  const history = canPersist ? persistedHistory : guestHistory;
+  const setHistory = canPersist ? setPersistedHistory : setGuestHistory;
   const [isPending, startTransition] = useTransition();
-  const [guestReady, setGuestReady] = useState(canPersist);
-
-  useEffect(() => {
-    if (canPersist) {
-      return;
-    }
-
-    setHistory(readGuestHistory());
-    setGuestReady(true);
-  }, [canPersist]);
 
   const displayValue = error ?? preview ?? (expression || "0");
 
@@ -144,9 +157,7 @@ export function CalculatorApp({
 
       startTransition(async () => {
         if (!canPersist) {
-          const next = appendGuestHistory(trimmed, result);
-          setHistory(next);
-          setGuestReady(true);
+          setHistory(appendGuestHistory(trimmed, result));
           return;
         }
 
@@ -164,7 +175,7 @@ export function CalculatorApp({
       setPreview(null);
       setError(err instanceof Error ? err.message : "Invalid expression");
     }
-  }, [canPersist, expression]);
+  }, [canPersist, expression, setHistory]);
 
   const handleKey = useCallback(
     (value: string) => {
@@ -209,7 +220,7 @@ export function CalculatorApp({
         );
       }
     });
-  }, [canPersist]);
+  }, [canPersist, setHistory]);
 
   return (
     <div className="grid min-w-0 flex-1 gap-6 lg:grid-cols-[minmax(0,22rem)_1fr]">
@@ -296,7 +307,7 @@ export function CalculatorApp({
         </div>
 
         <div className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
-          {!guestReady || history.length === 0 ? (
+          {history.length === 0 ? (
             <p className="px-2 py-6 text-sm text-[var(--color-muted)]">
               {canPersist
                 ? "No calculations yet. Press Calculate to save results."
