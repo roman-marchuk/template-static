@@ -45,7 +45,7 @@ Do **not** touch UI, calculator, or `00002_calculator_history.sql`.
 
 ## auth-ui
 
-1. `src/components/auth/oauth-buttons.tsx` — Google + Apple buttons
+1. `src/components/auth/oauth-buttons.tsx` — Google sign-in button
 2. Server actions in `src/components/auth/` or `src/lib/actions/auth.ts` (if you add it — **only auth-ui may create auth actions file**) calling `signInWithOAuth` with `redirectTo: ${origin}/auth/callback`
 3. `src/components/auth/sign-out-button.tsx` — calls `supabase.auth.signOut()`, redirects to `/`
 4. `src/app/login/page.tsx` — polished card UI using shadcn
@@ -130,7 +130,7 @@ Read PARALLEL.md. Implement ONLY your owned paths:
 - src/components/auth/oauth-buttons.tsx
 - src/components/auth/sign-out-button.tsx
 
-Build Google + Apple OAuth via Supabase signInWithOAuth (redirectTo: ${origin}/auth/callback).
+Build Google OAuth via Supabase signInWithOAuth (redirectTo: ${origin}/auth/callback).
 Use shadcn components already in src/components/ui. Import createClient from @/lib/supabase/server in server actions.
 
 Do not edit middleware, supabase lib (except consuming it), migrations, calculator, or history actions.

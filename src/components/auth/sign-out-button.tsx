@@ -1,9 +1,24 @@
-/** TODO(auth-ui): Sign out control for protected layout header. */
+import { LogOut } from "lucide-react";
+import { redirect } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
+
+async function signOut() {
+  "use server";
+
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/");
+}
 
 export function SignOutButton() {
   return (
-    <p className="text-sm text-muted-foreground">
-      Sign out — auth-ui agent owns this component.
-    </p>
+    <form action={signOut}>
+      <Button type="submit" variant="outline" size="sm">
+        <LogOut />
+        Sign out
+      </Button>
+    </form>
   );
 }

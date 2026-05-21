@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Template Static",
   description:
-    "Reusable Next.js template with Supabase auth, persistence, and Vercel deploy.",
+    "Next.js starter with Supabase auth, persistent calculator demo, and Vercel deploy.",
 };
 
 export default function RootLayout({

@@ -44,3 +44,6 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row
   execute function public.handle_new_user();
+
+grant select, insert, update on public.profiles to authenticated;
+grant all on public.profiles to service_role;

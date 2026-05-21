@@ -1,4 +1,4 @@
-/** Hand-written types — data agent may extend after migrations land. */
+/** Hand-written types aligned with Supabase migrations. */
 
 export type Json =
   | string
@@ -30,6 +30,15 @@ export interface Database {
           avatar_url?: string | null;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       calculator_history: {
         Row: {
@@ -53,8 +62,21 @@ export interface Database {
           result?: string;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "calculator_history_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
 
