@@ -1,0 +1,2 @@
+-- TODO(auth-core): Implement profiles table, auth.users trigger, and RLS.
+-- See PARALLEL.md stream auth-core for full spec.

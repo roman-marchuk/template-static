@@ -1,0 +1,2 @@
+-- TODO(data): Implement calculator_history table and RLS.
+-- See PARALLEL.md stream data for full spec.
