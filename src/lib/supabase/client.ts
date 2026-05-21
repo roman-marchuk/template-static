@@ -1,7 +1,12 @@
-/** TODO(auth-core): Implement Supabase browser client with @supabase/ssr. */
+import { createBrowserClient } from "@supabase/ssr";
 
-export function createClient(): never {
-  throw new Error("Not implemented — auth-core agent owns this file.");
+import type { Database } from "@/types/database";
+
+export function createClient() {
+  return createBrowserClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+  );
 }
 
 export type SupabaseBrowserClient = ReturnType<typeof createClient>;
