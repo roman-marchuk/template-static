@@ -5,7 +5,6 @@ import {
   useCallback,
   useEffect,
   useState,
-  useSyncExternalStore,
   useTransition,
 } from "react";
 import { toast } from "sonner";
@@ -50,18 +49,26 @@ function writeGuestHistory(items: HistoryListItem[]) {
 
 const guestHistoryListeners = new Set<() => void>();
 
-function subscribeGuestHistory(onStoreChange: () => void) {
-  guestHistoryListeners.add(onStoreChange);
-  return () => guestHistoryListeners.delete(onStoreChange);
-}
+function useGuestHistory() {
+  const [history, setHistory] = useState<HistoryListItem[]>([]);
 
-function getGuestHistorySnapshot(): HistoryListItem[] {
-  return readGuestHistory();
-}
+  useEffect(() => {
+    setHistory(readGuestHistory());
 
-function setGuestHistory(items: HistoryListItem[]) {
-  writeGuestHistory(items);
-  guestHistoryListeners.forEach((listener) => listener());
+    const onStoreChange = () => setHistory(readGuestHistory());
+    guestHistoryListeners.add(onStoreChange);
+    return () => {
+      guestHistoryListeners.delete(onStoreChange);
+    };
+  }, []);
+
+  const updateGuestHistory = useCallback((items: HistoryListItem[]) => {
+    writeGuestHistory(items);
+    setHistory(items);
+    guestHistoryListeners.forEach((listener) => listener());
+  }, []);
+
+  return [history, updateGuestHistory] as const;
 }
 
 function appendGuestHistory(
@@ -134,11 +141,7 @@ export function CalculatorApp({
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [persistedHistory, setPersistedHistory] = useState(initialHistory);
-  const guestHistory = useSyncExternalStore(
-    subscribeGuestHistory,
-    getGuestHistorySnapshot,
-    () => [],
-  );
+  const [guestHistory, setGuestHistory] = useGuestHistory();
   const history = canPersist ? persistedHistory : guestHistory;
   const setHistory = canPersist ? setPersistedHistory : setGuestHistory;
   const [isPending, startTransition] = useTransition();

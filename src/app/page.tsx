@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { CalculatorPreview } from "@/components/calculator-preview";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteNavSession } from "@/components/site-nav-session";
 import { Button } from "@/components/ui/button";
 import { getCurrentUserWithProfile } from "@/lib/auth/session";
 
@@ -34,8 +33,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <SiteNavSession />
-
       <main className="flex flex-1 flex-col pt-[calc(var(--nav-pill-offset)+3.5rem)]">
         <section className="page-gutter pb-[var(--space-3xl)] pt-[var(--space-xl)]">
           <div className="page-max grid min-w-0 items-start gap-10 lg:grid-cols-[7fr_5fr] lg:gap-[var(--space-2xl)]">

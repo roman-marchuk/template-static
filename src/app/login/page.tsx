@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { EmailAuthForm } from "@/components/auth/email-auth-form";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
-import { SiteNavSession } from "@/components/site-nav-session";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -23,8 +22,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <>
-      <SiteNavSession />
-
       <main className="flex min-h-[calc(100vh-1rem)] flex-1 flex-col pt-[calc(var(--nav-pill-offset)+3.5rem)] lg:min-h-screen lg:flex-row lg:pt-0">
         <section className="page-gutter flex flex-1 flex-col justify-center border-[var(--color-rule)] py-10 lg:border-r lg:py-0">
           <div className="page-max mx-auto w-full max-w-md lg:max-w-lg">

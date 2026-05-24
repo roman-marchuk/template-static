@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { CalculatorApp } from "@/components/calculator/calculator-app";
+import { CalculatorLoader } from "@/components/calculator/calculator-loader";
 import { Button } from "@/components/ui/button";
 import { listHistory } from "@/lib/actions/history";
 import { createClient } from "@/lib/supabase/server";
@@ -40,7 +40,7 @@ export default async function CalculatorPage() {
         ) : null}
       </div>
 
-      <CalculatorApp initialHistory={history} canPersist={!!user} />
+      <CalculatorLoader initialHistory={history} canPersist={!!user} />
     </main>
   );
 }
