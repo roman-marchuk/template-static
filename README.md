@@ -2,6 +2,8 @@
 
 Reusable Next.js template with Supabase auth (email/password + Google), Postgres persistence, and Vercel deployment. Demo app: calculator with per-user history.
 
+**Live demo:** [template-static.vercel.app](https://template-static.vercel.app) — reference deployment of this template (guest calculator works without sign-in; sign-in persists history to Supabase).
+
 ## What's included
 
 - **Next.js 16** (App Router) + TypeScript + Tailwind CSS v4 + shadcn/ui
