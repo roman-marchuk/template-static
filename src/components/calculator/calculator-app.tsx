@@ -1,7 +1,13 @@
 "use client";
 
 import { Equal, History, Trash2 } from "lucide-react";
-import { useCallback, useState, useSyncExternalStore, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+} from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -104,6 +110,20 @@ function formatHistoryDate(iso: string): string {
   } catch {
     return iso;
   }
+}
+
+function HistoryTimestamp({ iso }: { iso: string }) {
+  const [label, setLabel] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLabel(formatHistoryDate(iso));
+  }, [iso]);
+
+  return (
+    <p className="mt-1 text-xs text-[var(--color-muted)]">
+      {label ?? "\u00a0"}
+    </p>
+  );
 }
 
 export function CalculatorApp({
@@ -330,9 +350,7 @@ export function CalculatorApp({
                         = {item.result}
                       </span>
                     </p>
-                    <p className="mt-1 text-xs text-[var(--color-muted)]">
-                      {formatHistoryDate(item.created_at)}
-                    </p>
+                    <HistoryTimestamp iso={item.created_at} />
                   </button>
                 </li>
               ))}
